@@ -4,9 +4,7 @@ public class Board {
   int col;
   int row;
   public Piece currentPiece;
-  
-
-  private final Piece[][] game;
+  private final Piece[][] board;
   
   public Board(int col, int row) {
         
@@ -15,9 +13,9 @@ public class Board {
 
         //game is an array of pieces
         //pieces are red, yellow, or blank  
-        game = new Piece[row][col];
+        board = new Piece[row][col];
 
-        for (Piece[] x : game) {
+        for (Piece[] x : board) {
 
               Arrays.fill(x, Piece.BLANK);
         
@@ -25,7 +23,7 @@ public class Board {
   }
   public void printGame() {
 
-          for (Piece[] pos : game) {
+          for (Piece[] pos : board) {
               for (Piece game : pos) {
                   System.out.print(game.toString());
               }
@@ -43,12 +41,12 @@ public class Board {
 
 	     for(int i = row-1; i >= 0; i--){
 
-        if(game[i][colChoice] == Piece.BLANK){
+        if(board[i][colChoice] == Piece.BLANK){
         
         System.out.println(" ");
         System.out.println("Piece Placed Successfully. ");
         System.out.println(" ");
-        game[i][colChoice] = piece;
+        board[i][colChoice] = piece;
         
         printGame();
         return i;
@@ -58,10 +56,10 @@ public class Board {
 
        }
 
-       System.out.println(" ");
-       System.out.println("Piece Not Placed. ");
+
+       System.out.println("\nPiece Not Placed. ");
        System.out.println("Column is full. ");
-       System.out.println(" ");
+
        
 
        return -1;
@@ -70,7 +68,7 @@ public class Board {
 
     public Piece getPiece(int rowPos, int colPos){
 
-      return currentPiece = game[rowPos][colPos];
+      return currentPiece = board[rowPos][colPos];
 
     }
 

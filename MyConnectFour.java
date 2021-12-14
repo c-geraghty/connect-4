@@ -7,12 +7,13 @@ public class MyConnectFour {
     CheckWin checker;
     Player[] players;
     Player currentPlayer;
-    Piece currentPlayerPiece;
+    Piece currentPlayerColour;
     Player winner = null;
     int toReturn;
     int columnChoice = 1;
     int turnsTaken = 0;
     int rowPos = -1;
+    int[] placedPos;
     Scanner scan = new Scanner(System.in);
     Random rand = new Random();
     static final int COL_SIZE = 7;
@@ -24,7 +25,7 @@ public class MyConnectFour {
         players = new Player[2];
         players[0] = new Player(1, Piece.RED);
         players[1] = new Player(2, Piece.YELLOW);
-
+        currentPlayer = players[0];
         playGame();
 
     }
@@ -45,21 +46,22 @@ public class MyConnectFour {
 
             if (winner == null) {
 
+                currentPlayerColour = currentPlayer.getColourPiece();
 
-                takeTurn();
+                if(currentPlayer == players[0]) {
+                    placedPos = currentPlayer.takeTurnHuman(currentPlayerColour, board);
+                }
+                else {
+                    placedPos = currentPlayer.takeTurnRobot(currentPlayerColour, board);
+                }
+
+
                 turnsTaken++;
 
 
-                if (turnsTaken == 42) {
-
-                    System.out.println("Board is full. GAME OVER.");
-                    break;
-
-                }
-
-                if (!checker.checkDiag(rowPos, columnChoice) &&
-                        !checker.checkUpDown(rowPos, columnChoice) &&
-                        !checker.checkLeftRight(rowPos, columnChoice)) {
+                if (!checker.checkDiag(placedPos[0], placedPos[1]) &&
+                        !checker.checkUpDown(placedPos[0], placedPos[1]) &&
+                        !checker.checkLeftRight(placedPos[0], placedPos[1])) {
 
                     winner = null;
 
@@ -68,8 +70,13 @@ public class MyConnectFour {
 
                 }
 
+                if (turnsTaken == 42) {
 
-                rowPos = -1;
+                    System.out.println("Board is full. GAME OVER.");
+                    break;
+
+                }
+
 
                 //if you haven't had a winner then change players
                 if (currentPlayer == players[0]) {
@@ -89,66 +96,6 @@ public class MyConnectFour {
 
             }
         }
-    }
-
-    private void takeTurn() {
-
-        //two turn types - human and computer
-        if (currentPlayer == players[0]) {
-            while (rowPos == -1) {
-
-                System.out.println(" ");
-                System.out.print("Please choose a column >>> ");
-
-
-                columnChoice = getUserInput() - 1;
-
-                while (columnChoice < 0 || columnChoice >= 7) {
-
-                    System.out.println(" ");
-                    System.out.println("Invalid column number.");
-                    System.out.print("Please choose a column number between 1 and 7 >>> ");
-                    System.out.println(" ");
-                    columnChoice = getUserInput() - 1;
-
-                }
-
-                //place piece on board
-                currentPlayerPiece = currentPlayer.getColourPiece();
-                rowPos = board.acceptPiece(currentPlayerPiece, columnChoice);
-
-            }
-        } else if (currentPlayer == players[1]) {
-
-            System.out.println(" ");
-            System.out.println("Robot Player's Turn");
-
-            columnChoice = rand.nextInt(7);
-            currentPlayerPiece = currentPlayer.getColourPiece();
-            rowPos = board.acceptPiece(currentPlayerPiece, columnChoice);
-
-
-        }
-
-    }
-
-    private int getUserInput() {
-
-
-
-        try {
-
-            toReturn = scan.nextInt();
-
-        } catch (Exception e) {
-
-            scan.next();
-            System.out.println("Don't enter non-numeric values.");
-            System.out.print("Please choose a column number >>>");
-            toReturn = getUserInput();
-        }
-
-        return toReturn;
     }
 
     private void randomizeFirstTurn(){
