@@ -7,7 +7,7 @@ public class MyConnectFour {
     CheckWin checker;
     Player[] players;
     Player currentPlayer;
-    Piece currentPlayerColour;
+
     Player winner = null;
     int toReturn;
     int columnChoice = 1;
@@ -18,6 +18,7 @@ public class MyConnectFour {
     Random rand = new Random();
     static final int COL_SIZE = 7;
     static final int ROW_SIZE = 6;
+    private Piece currentPlayerPiece;
 
     public MyConnectFour() {
         board = new Board(COL_SIZE, ROW_SIZE);
@@ -46,13 +47,13 @@ public class MyConnectFour {
 
             if (winner == null) {
 
-                currentPlayerColour = currentPlayer.getColourPiece();
+                currentPlayerPiece = currentPlayer.getPiece();
 
                 if(currentPlayer == players[0]) {
-                    placedPos = currentPlayer.takeTurnHuman(currentPlayerColour, board);
+                    placedPos = currentPlayer.takeTurnHuman(currentPlayerPiece, board);
                 }
                 else {
-                    placedPos = currentPlayer.takeTurnRobot(currentPlayerColour, board);
+                    placedPos = currentPlayer.takeTurnRobot(currentPlayerPiece, board);
                 }
 
 

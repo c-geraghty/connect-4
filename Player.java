@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Player {
 
     int playerNum;
-    Piece colour;
+    Piece piece;
     Scanner scan = new Scanner(System.in);
     Random rand = new Random();
     int columnChoice;
@@ -12,10 +12,10 @@ public class Player {
     int[] placedPos = {0,0};
 
 
-    public Player(int playerNum, Piece colour) {
+    public Player(int playerNum, Piece piece) {
 
         this.playerNum = playerNum;
-        this.colour = colour;
+        this.piece = piece;
 
     }
 
@@ -23,8 +23,8 @@ public class Player {
         return playerNum;
     }
 
-    public Piece getColourPiece() {
-        return colour;
+    public Piece getPiece() {
+        return piece;
     }
 
     public int[] takeTurnHuman(Piece currentPlayerPiece, Board board) {
@@ -53,7 +53,7 @@ public class Player {
 
                 //place piece on board
 
-                rowPos = board.acceptPiece(currentPlayerPiece, columnChoice);
+                rowPos = board.checkIfPieceAccepted(currentPlayerPiece, columnChoice);
                 placedPos[0] = rowPos;
                 placedPos[1] = columnChoice;
                 return placedPos;
@@ -70,7 +70,7 @@ public class Player {
         rowPos = -1;
         while(rowPos == -1) {
             columnChoice = rand.nextInt(7);
-            rowPos = board.acceptPiece(currentPlayerPiece, columnChoice);
+            rowPos = board.checkIfPieceAccepted(currentPlayerPiece, columnChoice);
         }
 
         placedPos[0] = rowPos;

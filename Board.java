@@ -35,7 +35,7 @@ public class Board {
           System.out.println();
       }
       
-    public int acceptPiece(Piece piece, int colChoice){
+    public int checkIfPieceAccepted(Piece piece, int colChoice){
 
      
 
@@ -72,6 +72,6 @@ public class Board {
 
     }
 
-    
-  
+
+
 }
