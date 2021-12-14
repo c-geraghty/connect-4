@@ -1,8 +1,8 @@
 import java.util.Arrays;
 public class Board {
 
-  private int col;
-  private int row;
+  int col;
+  int row;
   public Piece currentPiece;
   
 
@@ -37,7 +37,7 @@ public class Board {
           System.out.println();
       }
       
-    public int placePiece(Piece piece, int colChoice){
+    public int acceptPiece(Piece piece, int colChoice){
 
      
 

@@ -15,11 +15,15 @@ enum Piece {
     
 
     public String toString() {
+
         return String.format("|%s|", image);
+
     }
 
     public String getColourString() {
+
         return String.format("%s", image);
+
     }
 
     
