@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class Connect4Board extends Board{
 
@@ -39,10 +38,5 @@ public class Connect4Board extends Board{
 
     }
 
-    public Piece getPiece(int rowPos, int colPos){
-
-        return currentPiece = board[rowPos][colPos];
-
-    }
 
 }

@@ -15,17 +15,17 @@ public class Board {
         //pieces are red, yellow, or blank  
         board = new Piece[row][col];
 
-        for (Piece[] x : board) {
+        for (Piece[] pos : board) {
 
-              Arrays.fill(x, Piece.BLANK);
+              Arrays.fill(pos, Piece.BLANK);
         
     }
   }
   public void printGame() {
 
           for (Piece[] pos : board) {
-              for (Piece game : pos) {
-                  System.out.print(game.toString());
+              for (Piece x : pos) {
+                  System.out.print(x.toString());
               }
               System.out.println();
           }
@@ -34,6 +34,12 @@ public class Board {
           }
           System.out.println();
       }
+
+    public Piece getPiece(int rowPos, int colPos){
+
+        return currentPiece = board[rowPos][colPos];
+
+    }
       
 
 

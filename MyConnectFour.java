@@ -1,32 +1,35 @@
-import java.util.Scanner;
 import java.util.Random;
 
 public class MyConnectFour {
 
-    Connect4Board board;
-    CheckWin checker;
-    Player[] players;
-    Player currentPlayer;
-
-    Player winner = null;
-    int toReturn;
-    int columnChoice = 1;
-    int turnsTaken = 0;
-    int rowPos = -1;
-    int[] placedPos;
-    Scanner scan = new Scanner(System.in);
     Random rand = new Random();
+
     static final int COL_SIZE = 7;
     static final int ROW_SIZE = 6;
+
+    Connect4Board board;
+    CheckWin checker;
+    Connect4Player[] players;
+    Connect4Player currentPlayer;
+    Connect4Player winner = null;
     Piece currentPlayerPiece;
 
+    int turnsTaken = 0;
+    int[] placedPos;
+
+
+
+
     public MyConnectFour() {
+
         board = new Connect4Board(COL_SIZE, ROW_SIZE);
         checker = new CheckWin(board);
-        players = new Player[2];
-        players[0] = new Player(1, Piece.RED);
-        players[1] = new Player(2, Piece.YELLOW);
+        players = new Connect4Player[2];
+        players[0] = new Connect4Player(1, Piece.RED);
+        players[1] = new Connect4Player(2, Piece.YELLOW);
         currentPlayer = players[0];
+
+
         playGame();
 
     }
