@@ -48,8 +48,10 @@ public class Connect4Player extends Player {
         System.out.println("Robot Player's Turn");
         rowPos = -1;
         while(rowPos == -1) {
-            columnChoice = rand.nextInt(7);
+
+            columnChoice = randomizer.randomBetween0andX(7);
             rowPos = board.checkIfPieceAccepted(currentPlayerPiece, columnChoice);
+
         }
 
         placedPos[0] = rowPos;

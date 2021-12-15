@@ -6,7 +6,7 @@ public class Player {
     int playerNum;
     Piece piece;
     Scanner scan = new Scanner(System.in);
-    Random rand = new Random();
+    Randomizer randomizer = new Randomizer();
     int columnChoice;
     int rowPos = -1;
     int[] placedPos = {0,0};
