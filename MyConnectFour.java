@@ -1,8 +1,5 @@
 //import random module
 
-import java.util.Random;
-
-
 public class MyConnectFour {
 
 
@@ -84,36 +81,52 @@ public class MyConnectFour {
                     placedPos = currentPlayer.takeTurnRobot(currentPlayerPiece, board);
                 }
 
-                turnsTaken++;
 
-                //check if placed piece results in a win condition
-                if (checker.checkDiag(placedPos[0], placedPos[1]) ||
-                        checker.checkUpDown(placedPos[0], placedPos[1]) ||
-                        checker.checkLeftRight(placedPos[0], placedPos[1])) {
+                //if the rowPos output from a turn == -1
+                //means turn was unsuccessful
+                //if that is not the case then check for win condition
+                //increment turn counter
+                //change players
+                if(placedPos[0] != -1) {
 
-                    //if win condition then winner is current player
-                    winner = currentPlayer;
+                    turnsTaken++;
 
+                    //check if placed piece results in a win condition
+                    if (checker.checkDiag(placedPos[0], placedPos[1]) ||
+                            checker.checkUpDown(placedPos[0], placedPos[1]) ||
+                            checker.checkLeftRight(placedPos[0], placedPos[1])) {
+
+                        //if win condition then winner is current player
+                        winner = currentPlayer;
+
+                    }
+
+                    //if no winner then change current player
+                    if (currentPlayer == players[0]) {
+
+                        currentPlayer = players[1];
+
+                    } else {
+
+                        currentPlayer = players[0];
+
+                    }
                 }
 
-                //if no winner then change current player
-                if (currentPlayer == players[0]) {
-
-                    currentPlayer = players[1];
-
-                } else {
-
-                    currentPlayer = players[0];
-
-                }
 
             }
 
             //if winner != null THEN output winner
             else {
 
-                System.out.println("Player " + String.format("%d", winner.getPlayerNum()) + " is the winner!");
-                break;
+                //change output depending on what player wins
+                if(winner == players[0]){
+                    System.out.println("Player " + String.format("%d", winner.getPlayerNum()) + ", the human player is the winner!");
+                    break;
+                }else{
+                    System.out.println("Player " + String.format("%d", winner.getPlayerNum()) + ", the robot player is the winner!");
+                    break;
+                }
 
             }
         }
@@ -122,9 +135,7 @@ public class MyConnectFour {
     private void randomizeFirstTurn() {
 
 
-
-
-        if (randomizer.fiftyFiftyChance()) {             //rand.nextInt returns a random number 0-9
+        if (randomizer.fiftyFiftyChance()) {             //randomizer.fiftyFiftyChance returns true or false
 
             currentPlayer = players[0];
             System.out.println("\nHuman Player goes first. ");
