@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class MyConnectFour {
 
-    Board board;
+    Connect4Board board;
     CheckWin checker;
     Player[] players;
     Player currentPlayer;
@@ -18,10 +18,10 @@ public class MyConnectFour {
     Random rand = new Random();
     static final int COL_SIZE = 7;
     static final int ROW_SIZE = 6;
-    private Piece currentPlayerPiece;
+    Piece currentPlayerPiece;
 
     public MyConnectFour() {
-        board = new Board(COL_SIZE, ROW_SIZE);
+        board = new Connect4Board(COL_SIZE, ROW_SIZE);
         checker = new CheckWin(board);
         players = new Player[2];
         players[0] = new Player(1, Piece.RED);

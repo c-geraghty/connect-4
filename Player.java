@@ -27,7 +27,7 @@ public class Player {
         return piece;
     }
 
-    public int[] takeTurnHuman(Piece currentPlayerPiece, Board board) {
+    public int[] takeTurnHuman(Piece currentPlayerPiece, Connect4Board board) {
 
         //two turn types - human and computer
 
@@ -63,7 +63,7 @@ public class Player {
             return placedPos;
         }
 
-    public int[] takeTurnRobot(Piece currentPlayerPiece, Board board){
+    public int[] takeTurnRobot(Piece currentPlayerPiece, Connect4Board board){
 
         System.out.println(" ");
         System.out.println("Robot Player's Turn");

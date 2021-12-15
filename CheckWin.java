@@ -1,12 +1,12 @@
 public class CheckWin {
 
-    Board board;
+    Connect4Board board;
     int colPos;
     int rowPos;
     int pos;
     int count = 1;
 
-    public CheckWin(Board board) {
+    public CheckWin(Connect4Board board) {
 
         this.board = board;
 
