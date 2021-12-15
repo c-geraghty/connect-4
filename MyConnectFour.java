@@ -1,30 +1,41 @@
-import java.util.Scanner;
-import java.util.Random;
+//import random module
 
 public class MyConnectFour {
 
-    Board board;
+
+
+    static final int COL_SIZE = 7;      //defines number f columns on the board
+    static final int ROW_SIZE = 6;      //defines number f rows on the board
+
+    //initialise class objects
+    Connect4Board board;
     CheckWin checker;
-    Player[] players;
-    Player currentPlayer;
+    Connect4Player[] players;
+    Connect4Player currentPlayer;
+    Connect4Player winner = null;
     Piece currentPlayerPiece;
-    Player winner = null;
-    int toReturn;
-    int columnChoice = 1;
+    Randomizer randomizer;
+
+    //initialise variables
     int turnsTaken = 0;
-    int rowPos = -1;
-    Scanner scan = new Scanner(System.in);
-    Random rand = new Random();
-    static final int COL_SIZE = 7;
-    static final int ROW_SIZE = 6;
+    int[] placedPos;                    //2D array for placed position of a piece - [row, col]
 
+
+    //MyConnectFour constructors initialises the game state
+    //initialises the objects necessary to play the game
+    //and then calls the playGame() method
     public MyConnectFour() {
-        board = new Board(COL_SIZE, ROW_SIZE);
-        checker = new CheckWin(board);
-        players = new Player[2];
-        players[0] = new Player(1, Piece.RED);
-        players[1] = new Player(2, Piece.YELLOW);
 
+        board = new Connect4Board(COL_SIZE, ROW_SIZE);
+        checker = new CheckWin(board);
+        players = new Connect4Player[2];
+        players[0] = new Connect4Player(1, Piece.RED);
+        players[1] = new Connect4Player(2, Piece.YELLOW);
+        currentPlayer = players[0];
+        randomizer = new Randomizer();
+
+
+        //playGame() is the main game loop
         playGame();
 
     }
@@ -37,19 +48,17 @@ public class MyConnectFour {
         System.out.println("To play the game type in the number of the column you want to drop you counter in");
         System.out.println("A player wins by connecting 4 counters in a row - vertically, horizontally or diagonally. \n");
 
-        board.printGame();
 
-        randomizeFirstTurn();
+        board.printGame();              //print's game board to console
 
-        while (true) {
+        randomizeFirstTurn();           //randomize currentPlayer at start of game
+
+        while (true) {                  //while loops runs until game ends - either via a winner being declared or board becoming full
 
             if (winner == null) {
 
-
-                takeTurn();
-                turnsTaken++;
-
-
+                //check if board is full with no winner
+                //game over
                 if (turnsTaken == 42) {
 
                     System.out.println("Board is full. GAME OVER.");
@@ -57,110 +66,81 @@ public class MyConnectFour {
 
                 }
 
-                if (!checker.checkDiag(rowPos, columnChoice) &&
-                        !checker.checkUpDown(rowPos, columnChoice) &&
-                        !checker.checkLeftRight(rowPos, columnChoice)) {
+                //returns RED or YELLOW depending on currentPlayer value
+                currentPlayerPiece = currentPlayer.getPiece();
 
-                    winner = null;
-
-                } else {
-                    winner = currentPlayer;
-
-                }
-
-
-                rowPos = -1;
-
-                //if you haven't had a winner then change players
+                //players[0] is the human player
                 if (currentPlayer == players[0]) {
 
-                    currentPlayer = players[1];
+                    //takeTurn returns a 2D int array - row and col that placed piece ends up at
+                    placedPos = currentPlayer.takeTurnHuman(currentPlayerPiece, board);
+                }
+                //players[1] is the robot player
+                else {
 
-                } else {
-
-                    currentPlayer = players[0];
-
+                    placedPos = currentPlayer.takeTurnRobot(currentPlayerPiece, board);
                 }
 
-            } else {
 
-                System.out.println("Player " + String.format("%d", winner.getPlayerNum()) + " is the winner!");
-                break;
+                //if the rowPos output from a turn == -1
+                //means turn was unsuccessful
+                //if that is not the case then check for win condition
+                //increment turn counter
+                //change players
+                if(placedPos[0] != -1) {
+
+                    turnsTaken++;
+
+                    //check if placed piece results in a win condition
+                    if (checker.checkDiag(placedPos[0], placedPos[1]) ||
+                            checker.checkUpDown(placedPos[0], placedPos[1]) ||
+                            checker.checkLeftRight(placedPos[0], placedPos[1])) {
+
+                        //if win condition then winner is current player
+                        winner = currentPlayer;
+
+                    }
+
+                    //if no winner then change current player
+                    if (currentPlayer == players[0]) {
+
+                        currentPlayer = players[1];
+
+                    } else {
+
+                        currentPlayer = players[0];
+
+                    }
+                }
+
+
+            }
+
+            //if winner != null THEN output winner
+            else {
+
+                //change output depending on what player wins
+                if(winner == players[0]){
+                    System.out.println("Player " + String.format("%d", winner.getPlayerNum()) + ", the human player is the winner!");
+                    break;
+                }else{
+                    System.out.println("Player " + String.format("%d", winner.getPlayerNum()) + ", the robot player is the winner!");
+                    break;
+                }
 
             }
         }
     }
 
-    private void takeTurn() {
-
-        //two turn types - human and computer
-        if (currentPlayer == players[0]) {
-            while (rowPos == -1) {
-
-                System.out.println(" ");
-                System.out.print("Please choose a column >>> ");
+    private void randomizeFirstTurn() {
 
 
-                columnChoice = getUserInput() - 1;
-
-                while (columnChoice < 0 || columnChoice >= 7) {
-
-                    System.out.println(" ");
-                    System.out.println("Invalid column number.");
-                    System.out.print("Please choose a column number between 1 and 7 >>> ");
-                    System.out.println(" ");
-                    columnChoice = getUserInput() - 1;
-
-                }
-
-                //place piece on board
-                currentPlayerPiece = currentPlayer.getColourPiece();
-                rowPos = board.acceptPiece(currentPlayerPiece, columnChoice);
-
-            }
-        } else if (currentPlayer == players[1]) {
-
-            System.out.println(" ");
-            System.out.println("Robot Player's Turn");
-
-            columnChoice = rand.nextInt(7);
-            currentPlayerPiece = currentPlayer.getColourPiece();
-            rowPos = board.acceptPiece(currentPlayerPiece, columnChoice);
-
-
-        }
-
-    }
-
-    private int getUserInput() {
-
-
-
-        try {
-
-            toReturn = scan.nextInt();
-
-        } catch (Exception e) {
-
-            scan.next();
-            System.out.println("Don't enter non-numeric values.");
-            System.out.print("Please choose a column number >>>");
-            toReturn = getUserInput();
-        }
-
-        return toReturn;
-    }
-
-    private void randomizeFirstTurn(){
-
-        if(rand.nextInt(10) < 5){
+        if (randomizer.fiftyFiftyChance()) {             //randomizer.fiftyFiftyChance returns true or false
 
             currentPlayer = players[0];
             System.out.println("\nHuman Player goes first. ");
 
-        }
-
-        else{
+        } else {
 
             currentPlayer = players[1];
             System.out.println("\nRobot Player goes first. ");
